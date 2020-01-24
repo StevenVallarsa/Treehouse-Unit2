@@ -10,7 +10,10 @@ FSJS project 2 - List Filter and Pagination
  * * */
 
 const studentList = document.querySelectorAll(".student-item");
-let studentsPerPage = 10;
+let studentsPerPage = 10; // Default 10 students per page
+let pageNumber = 6; // Default start at page 1
+
+const pagination = document.querySelector(".pagination");
 
 /*** 
    Create the `showPage` function to hide all of the items in the 
@@ -40,11 +43,39 @@ function showPage(studentList, page) {
   }
 }
 
-showPage(studentList, 1);
-
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
 ***/
+function appendPageLinks() {
+  let totalPages = Math.ceil(studentList.length / studentsPerPage);
+
+  const ul = document.createElement("ul");
+
+  for (let i = 1; i <= totalPages; i++) {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.attributes["href"] = "#";
+    if (i === pageNumber) {
+      a.className = "active";
+    }
+    a.textContent = i;
+    a.setAttribute("href", "#");
+    li.appendChild(a);
+    ul.appendChild(li);
+  }
+  console.log(ul);
+  pagination.appendChild(ul);
+}
+
+pagination.addEventListener("click", e => {
+  if (e.target.tagName === "A") {
+    pageNumber = parseInt(e.target.innerHTML);
+    console.log(typeof pageNumber);
+  }
+});
 
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
+
+showPage(studentList, pageNumber);
+appendPageLinks();
