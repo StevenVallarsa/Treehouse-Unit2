@@ -32,10 +32,10 @@ function showPage(studentList, page) {
   let endIndex = page * studentsPerPage;
 
   for (let i = 0; i < studentList.length; i++) {
-    if (i < startIndex && i > endIndex) {
-      studentList[i].style.display = "none";
-    } else {
+    if (i + 1 > startIndex && i + 1 < endIndex) {
       studentList[i].style.display = "";
+    } else {
+      studentList[i].style.display = "none";
     }
   }
 }
