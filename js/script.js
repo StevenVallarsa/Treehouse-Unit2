@@ -11,9 +11,7 @@ FSJS project 2 - List Filter and Pagination
 
 const studentList = document.querySelectorAll(".student-item");
 let studentsPerPage = 10; // Default 10 students per page
-let pageNumber = 6; // Default start at page 1
-
-const pagination = document.querySelector(".pagination");
+let pageNumber = 1; // Default start at page 1
 
 /*** 
    Create the `showPage` function to hide all of the items in the 
@@ -30,17 +28,18 @@ const pagination = document.querySelector(".pagination");
        "invoke" the function 
 ***/
 
-function showPage(studentList, page) {
+function showPage(list, page) {
   let startIndex = page * studentsPerPage - studentsPerPage;
   let endIndex = page * studentsPerPage;
 
-  for (let i = 0; i < studentList.length; i++) {
-    if (i + 1 > startIndex && i + 1 < endIndex) {
-      studentList[i].style.display = "";
+  for (let i = 0; i < list.length; i++) {
+    if (i + 1 > startIndex && i < endIndex) {
+      list[i].style.display = "";
     } else {
-      studentList[i].style.display = "none";
+      list[i].style.display = "none";
     }
   }
+  appendPageLinks();
 }
 
 /*** 
@@ -48,6 +47,8 @@ function showPage(studentList, page) {
    functionality to the pagination buttons.
 ***/
 function appendPageLinks() {
+  const pagination = document.querySelector(".pagination");
+
   let totalPages = Math.ceil(studentList.length / studentsPerPage);
 
   const ul = document.createElement("ul");
@@ -60,22 +61,25 @@ function appendPageLinks() {
       a.className = "active";
     }
     a.textContent = i;
-    a.setAttribute("href", "#");
+
+    if (i !== pageNumber) {
+      a.setAttribute("href", "#");
+    }
+
     li.appendChild(a);
     ul.appendChild(li);
   }
-  console.log(ul);
   pagination.appendChild(ul);
 }
 
-pagination.addEventListener("click", e => {
+const ulClick = document.querySelector(".pagination");
+ulClick.addEventListener("click", e => {
   if (e.target.tagName === "A") {
     pageNumber = parseInt(e.target.innerHTML);
-    console.log(typeof pageNumber);
+    showPage(studentList, pageNumber);
   }
 });
 
 // Remember to delete the comments that came with this file, and replace them with your own code comments.
 
 showPage(studentList, pageNumber);
-appendPageLinks();
