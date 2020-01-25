@@ -12,6 +12,7 @@ FSJS project 2 - List Filter and Pagination
 const studentList = document.querySelectorAll(".student-item");
 let studentsPerPage = 10; // Default 10 students per page
 let pageNumber = 1; // Default start at page 1
+const pageSelector = document.querySelector(".page");
 
 /*** 
    Create the `showPage` function to hide all of the items in the 
@@ -56,12 +57,13 @@ function appendPageLinks() {
   for (let i = 1; i <= totalPages; i++) {
     const li = document.createElement("li");
     const a = document.createElement("a");
-    a.attributes["href"] = "#";
+    a.setAttribute("href", "#");
     if (i === pageNumber) {
       a.className = "active";
     }
     a.textContent = i;
 
+    // to only allow clickability of non-curent page number
     if (i !== pageNumber) {
       a.setAttribute("href", "#");
     }
@@ -69,7 +71,15 @@ function appendPageLinks() {
     li.appendChild(a);
     ul.appendChild(li);
   }
+  //
+  console.log(ul);
+  deletePaginationLinks();
   pagination.appendChild(ul);
+}
+
+function deletePaginationLinks() {
+  let paginationLinks = document.querySelector(".pagination");
+  pageSelector.removeChild(paginationLinks);
 }
 
 const ulClick = document.querySelector(".pagination");
